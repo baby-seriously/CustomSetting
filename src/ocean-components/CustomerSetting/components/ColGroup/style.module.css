@@ -1,0 +1,138 @@
+.colGroups {
+  width: 560px;
+}
+.colGroups .search {
+  background-color: #fff;
+  border-bottom: 1px solid #ebebed;
+}
+.colGroups .search :global .byted-input-wrapper .byted-input-prepend:first-child {
+  border: none;
+}
+.colGroups .search :global .byted-input-wrapper .byted-input-prepend {
+  padding-right: 0px;
+  padding-left: 16px;
+}
+.colGroups .searchPrepend :global .i-icon {
+  cursor: pointer;
+}
+.colGroups .searchPrepend span {
+  color: #969aa0;
+  font-weight: 600;
+  font-size: 14px;
+}
+.colGroups .groupsContent {
+  display: flex;
+  height: 408px;
+}
+.colGroups .groupsContent > div {
+  height: 100%;
+  overflow-y: auto;
+}
+.colGroups .groupsContent .leftGroups {
+  width: 160px;
+  border-right: 1px solid #f8f8f9;
+  background-color: #f4f4f5;
+}
+.colGroups .groupsContent .leftGroups .groupsTree {
+  padding-top: 14px;
+}
+.colGroups .groupsContent .leftGroups .groupsTree .item {
+  cursor: pointer;
+}
+.colGroups .groupsContent .leftGroups .groupsTree .item .itemChild {
+  padding: 3px 0;
+}
+.colGroups .groupsContent .leftGroups .groupsTree .item .groupFields {
+  padding-left: 14px;
+  margin-top: 4px;
+}
+.colGroups .groupsContent .leftGroups .groupsTree .item .groupFields .fieldItem {
+  padding: 2px 0;
+  color: #666;
+  font-size: 12px;
+}
+.colGroups .groupsContent .leftGroups .groupsTree :global .level-1 {
+  padding-left: 14px;
+  border-left: 2px solid transparent;
+  color: #323335;
+  font-weight: 500;
+  font-size: 14px;
+}
+.colGroups .groupsContent .leftGroups .groupsTree :global .level-1.active-l1 {
+  border-left: 2px solid #2a55e5;
+}
+.colGroups .groupsContent .leftGroups .groupsTree :global .level-2 {
+  margin-left: 14px;
+  color: #64666b;
+  font-size: 12px;
+}
+.colGroups .groupsContent .leftGroups .groupsTree :global .level-2.active-l2 {
+  color: #2a55e5;
+}
+.colGroups .groupsContent .rightFields {
+  flex: 1;
+  padding-right: 24px;
+}
+.colGroups .groupsContent .rightFields .fieldsTree {
+  padding-top: 14px;
+  padding-left: 16px;
+}
+.colGroups .groupsContent .rightFields .fieldsTree .item {
+  margin-bottom: 6px;
+}
+.colGroups .groupsContent .rightFields .fieldsTree .fieldsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 12px;
+  margin-bottom: 8px;
+}
+.colGroups .groupsContent .rightFields .fieldsTree .fieldsWrap > label,
+.colGroups .groupsContent .rightFields .fieldsTree .fieldsWrap > span {
+  flex-shrink: 0;
+  width: 50%;
+  margin-right: 0;
+}
+.colGroups .groupsContent .rightFields .fieldsTree :global .byted-checkbox-icon:hover {
+  border-color: #323335 !important;
+}
+.colGroups .groupsContent .rightFields .fieldsTree :global .byted-checkbox-checked .byted-checkbox-icon,
+.colGroups .groupsContent .rightFields .fieldsTree :global .byted-checkbox-indeterminate .byted-checkbox-icon {
+  border-color: #323335;
+  background-color: #323335;
+}
+.colGroups .groupsContent .rightFields .fieldsTree :global .byted-checkbox-disabled .byted-checkbox-icon {
+  border-color: #dfe0e2;
+  background-color: #dfe0e2;
+}
+.colGroups .groupsContent .rightFields .fieldsTree :global .level-1 > div:first-child {
+  margin-bottom: 6px;
+  color: #323335;
+  font-weight: 500;
+  font-size: 14px;
+}
+.colGroups .groupsContent .rightFields .fieldsTree :global .level-2 > div:first-child {
+  padding-left: 12px;
+  margin-bottom: 6px;
+  color: #64666b;
+  background-color: #f5f5f5;
+  font-size: 12px;
+}
+.colGroups .groupsContent .rightFields .fieldsTree :global .max-level-2.level-1 > div:first-child {
+  padding-left: 12px;
+  margin-bottom: 6px;
+  color: #64666b;
+  background-color: #f5f5f5;
+  font-size: 12px;
+}
+.colGroups .groupsContent .rightFields .fieldsTree :global .max-level-2.level-1 > div:nth-child(2) {
+  padding-left: 24px;
+}
+.colGroups :global .byted-input-prepend {
+  background-color: #fff;
+}
+.colGroups :global .byted-input-wrapper-filled .byted-input-prepend {
+  background-color: #fff;
+}
+.colGroups :global .byted-input-inner__wrapper.byted-input-inner__wrapper.byted-input-inner__wrapper-filled {
+  background-color: #fff;
+}

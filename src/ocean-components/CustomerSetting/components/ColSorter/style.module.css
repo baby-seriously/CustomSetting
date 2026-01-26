@@ -1,0 +1,79 @@
+.colSorter {
+  position: relative;
+}
+.colSorter :global .draggable {
+  top: auto !important;
+  left: auto !important;
+}
+.colSorter .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 38px;
+  padding: 0 20px;
+  background-color: #f4f4f5;
+}
+.colSorter .header > span {
+  color: #323335;
+  font-weight: 600;
+  font-size: 14px;
+}
+.colSorter .header > span:last-child {
+  font-weight: 400;
+}
+.colSorter .sortContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 408px;
+}
+.colSorter .sortContent .dragContent {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+}
+.colSorter .sortContent .fixedContent {
+  padding: 12px 12px 0 12px;
+  margin-bottom: 4px;
+}
+.colSorter .sortContent .fixedContent .fixedContentInner {
+  padding-bottom: 8px;
+  border-bottom: 1px solid #d5d6d9;
+}
+.colSorter .sortContent .fixedContent .tips {
+  margin-bottom: 8px;
+  color: #64666b;
+  font-weight: 400;
+  font-size: 12px;
+}
+.colSorter .sortContent .fixedContent .fixedItem {
+  cursor: not-allowed;
+}
+.colSorter .sortContent .fixedItem,
+.colSorter .sortContent .dragItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 28px;
+  padding: 0 10px 0 14px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  color: #323335;
+  background-color: #f8f8f9;
+}
+.colSorter .sortContent .fixedItem > div,
+.colSorter .sortContent .dragItem > div {
+  display: flex;
+  align-items: center;
+}
+.colSorter .sortContent .fixedItem > div > span,
+.colSorter .sortContent .dragItem > div > span {
+  margin-right: 10px;
+}
+.colSorter .sortContent .fixedItem > div .label,
+.colSorter .sortContent .dragItem > div .label {
+  width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

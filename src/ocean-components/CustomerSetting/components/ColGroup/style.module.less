@@ -1,0 +1,201 @@
+.colGroups {
+  width: 560px;
+
+  .search {
+    background-color: #fff;
+    border-bottom: 1px solid #ebebed;
+
+    :global {
+      .byted-input-wrapper .byted-input-prepend:first-child {
+        border: none;
+      }
+
+      .byted-input-wrapper .byted-input-prepend {
+        padding-right: 0px;
+        padding-left: 16px;
+      }
+    }
+  }
+
+  .searchPrepend {
+    :global {
+      .i-icon {
+        cursor: pointer;
+      }
+    }
+
+    span {
+      color: #969aa0;
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
+
+  .groupsContent {
+    display: flex;
+    height: 408px;
+
+    &>div {
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .leftGroups {
+      width: 160px;
+      border-right: 1px solid #f8f8f9;
+      background-color: #f4f4f5;
+
+      .groupsTree {
+        padding-top: 14px;
+
+        .item {
+          // margin-bottom: 6px;
+          cursor: pointer;
+
+          .itemChild {
+            padding: 3px 0;
+          }
+          
+          .groupFields {
+            padding-left: 14px;
+            margin-top: 4px;
+            
+            .fieldItem {
+              padding: 2px 0;
+              color: #666;
+              font-size: 12px;
+            }
+          }
+        }
+
+        :global {
+          .level-1 {
+            padding-left: 14px;
+            border-left: 2px solid transparent;
+            color: #323335;
+            font-weight: 500;
+            font-size: 14px;
+
+            // & > div {
+            // &:first-child {
+            // padding-bottom: 6px;
+            // }
+            // }
+
+            &.active-l1 {
+              border-left: 2px solid #2a55e5;
+            }
+          }
+
+          .level-2 {
+            margin-left: 14px;
+            color: #64666b;
+            font-size: 12px;
+
+            &.active-l2 {
+              color: #2a55e5;
+            }
+          }
+        }
+      }
+    }
+
+    .rightFields {
+      flex: 1;
+      padding-right: 24px;
+
+      .fieldsTree {
+        padding-top: 14px;
+        padding-left: 16px;
+
+        .item {
+          margin-bottom: 6px;
+        }
+
+        .fieldsWrap {
+          display: flex;
+          flex-wrap: wrap;
+          padding-left: 12px;
+          margin-bottom: 8px;
+
+          &>label,
+          >span {
+            flex-shrink: 0;
+            width: 50%;
+            margin-right: 0;
+          }
+        }
+
+        :global {
+          .byted-checkbox-icon:hover {
+            border-color: #323335 !important;
+          }
+
+          .byted-checkbox-checked .byted-checkbox-icon,
+          .byted-checkbox-indeterminate .byted-checkbox-icon {
+            border-color: #323335;
+            background-color: #323335;
+          }
+
+          .byted-checkbox-disabled .byted-checkbox-icon {
+            border-color: #dfe0e2;
+            background-color: #dfe0e2;
+          }
+
+          .level-1 {
+            &>div {
+              &:first-child {
+                margin-bottom: 6px;
+                color: #323335;
+                font-weight: 500;
+                font-size: 14px;
+              }
+            }
+          }
+
+          .level-2 {
+            &>div {
+              &:first-child {
+                padding-left: 12px;
+                margin-bottom: 6px;
+                color: #64666b;
+                background-color: #f5f5f5;
+                font-size: 12px;
+              }
+            }
+          }
+
+          .max-level-2.level-1 {
+            &>div {
+              &:first-child {
+                padding-left: 12px;
+                margin-bottom: 6px;
+                color: #64666b;
+                background-color: #f5f5f5;
+                font-size: 12px;
+              }
+
+              &:nth-child(2) {
+                padding-left: 24px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  :global {
+    .byted-input-prepend {
+      background-color: #fff;
+    }
+
+    .byted-input-wrapper-filled .byted-input-prepend {
+      background-color: #fff;
+    }
+
+    .byted-input-inner__wrapper.byted-input-inner__wrapper.byted-input-inner__wrapper-filled {
+      background-color: #fff;
+    }
+  }
+}

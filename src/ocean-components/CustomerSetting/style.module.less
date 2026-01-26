@@ -1,0 +1,31 @@
+.modal {
+  :global(.byted-btn-size-md) {
+    min-width: 60px;
+  }
+
+  :global(.byted-popper-trigger) {
+    display: inline-flex;
+
+    .i-icon svg {
+      position: relative;
+      top: 2px;
+      vertical-align: baseline;
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: row; // 强制水平排列
+  height: 448px;
+
+  &>div {
+    border: 1px solid #ebebed;
+    border-radius: 4px;
+
+    &:last-child {
+      flex: 1;
+      margin-left: 20px;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+.modal :global(.byted-btn-size-md) {
+  min-width: 60px;
+}
+.modal :global(.byted-popper-trigger) {
+  display: inline-flex;
+}
+.modal :global(.byted-popper-trigger) .i-icon svg {
+  position: relative;
+  top: 2px;
+  vertical-align: baseline;
+}
+.content {
+  display: flex;
+  flex-direction: row;
+  height: 448px;
+}
+.content > div {
+  border: 1px solid #ebebed;
+  border-radius: 4px;
+}
+.content > div:last-child {
+  flex: 1;
+  margin-left: 20px;
+}
