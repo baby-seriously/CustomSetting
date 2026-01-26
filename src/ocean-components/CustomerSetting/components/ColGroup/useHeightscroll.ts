@@ -5,7 +5,7 @@ import style from './style.module.less';
 // import { PREFIX_CLS } from '@/const/css';
 
 export interface UseHeightScrollOptions {
- rightFieldsRef: React.RefObject<HTMLDivElement>;
+ rightFieldsRef: React.RefObject<HTMLDivElement | null>;
  groupElementsRef: React.RefObject<Map<string, HTMLElement>>;
  isClickScrollingRef: React.RefObject<boolean>;
  activeGroupId: string | null;
@@ -13,7 +13,7 @@ export interface UseHeightScrollOptions {
 }
 
 // 使用scrollIntoView将右侧内容滚动到对应分组
-   export const scrollToGroup = (groupId: string, rightFieldsRef: React.RefObject<HTMLDivElement>) => {
+   export const scrollToGroup = (groupId: string, rightFieldsRef: React.RefObject<HTMLDivElement | null>) => {
  if (!rightFieldsRef.current) return;
 
  console.log('wgr useHeightscroll scrollToGroup called with:', { groupId });
@@ -89,7 +89,7 @@ export const updateLeftPanelHighlight = (groupId: string) => {
 
 // 处理滚动事件，更新左侧目录高亮
 const handleScroll = (
- rightFieldsRef: React.RefObject<HTMLDivElement>,
+ rightFieldsRef: React.RefObject<HTMLDivElement | null>,
  groupElementsRef: React.RefObject<Map<string, HTMLElement>>,
  isClickScrollingRef: React.RefObject<boolean>,
  activeGroupId: string | null,

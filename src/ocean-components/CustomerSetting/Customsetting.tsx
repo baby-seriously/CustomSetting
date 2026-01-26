@@ -1,6 +1,6 @@
-import { useRef, type JSX } from 'react';
+import React, { useRef } from 'react';
 import { Modal, Alert, type ModalProps } from 'antd';
-import { CustomsettingSettingInner, type CustomsettingSettingInnerRef } from './content';
+import { CustomsettingSettingInner, type CustomsettingInnerRef } from './content';
 import { useCustomerSetting } from './hooks/useCustomSetting';
 import style from './style.module.less';
 // 从 hook 中获取 Props 类型
@@ -15,11 +15,11 @@ export type CustomsettingSettingProps = Parameters<typeof useCustomerSetting>[0]
 // 这是完整的Props类型，必须包含
 // - storageKey: string
 // - systemFields: SystemField[] 或 getSystemFields: () => Promise<SystemField[]>
-export function CustomsettingSetting(props: CustomsettingSettingProps): JSX.Element {
+export function CustomsettingSetting(props: CustomsettingSettingProps): React.ReactElement {
   const { visible, onCancel, onSaveSuccess, modalProps, showTips, ...hookProps } = props;
 
   // 创建 ref 来调用内部组件的 保存 方法
-  const innerRef = useRef<CustomsettingSettingInnerRef>(null);
+  const innerRef = useRef<CustomsettingInnerRef>(null);
 
   const handleOk = async () => {
     const success = await innerRef.current?.onSave();

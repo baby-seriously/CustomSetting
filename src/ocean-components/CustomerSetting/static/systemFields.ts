@@ -1,4 +1,3 @@
-import { startCase } from 'lodash';
 import type { SystemField } from '../types/CustomPreferred';
 
 // 静态的系统字段数据，用于演示

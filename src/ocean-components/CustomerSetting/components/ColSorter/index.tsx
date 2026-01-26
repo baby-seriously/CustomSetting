@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   DndContext,
   closestCenter,
@@ -74,7 +75,7 @@ export default function ColSorter({
   onRemoveFields,
   onReorderFields,
   onReset,
-}: ColSorterProps): JSX.Element {
+}: ColSorterProps): React.ReactElement {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {

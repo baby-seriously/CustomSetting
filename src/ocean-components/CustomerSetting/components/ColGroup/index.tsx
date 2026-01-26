@@ -103,7 +103,7 @@ const buildGroupsFromFields = (fields: CustomField[]) => {
   return result;
 };
 
-export default function ColGroups({ fields, onToggleFields, maxLevel = 3 }: ColGroupsProps): JSX.Element {
+export default function ColGroups({ fields, onToggleFields, maxLevel = 3 }: ColGroupsProps): React.ReactElement {
   const [searchText, setSearchText] = useState<string>('');
   const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
   const rightFieldsRef = useRef<HTMLDivElement>(null);

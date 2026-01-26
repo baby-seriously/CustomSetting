@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Button, Space, Table, Card } from 'antd';
 import { useCustomerSetting } from './ocean-components/CustomerSetting/hooks/useCustomSetting';
 import { staticSystemFields } from './ocean-components/CustomerSetting/static/systemFields';
@@ -6,10 +5,8 @@ import { staticUserFields } from './ocean-components/CustomerSetting/static/user
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   // 使用自定义设置组件
-  const { fields, loading, save, openCustomColumnsSetting, renderCustomColumnsSetting } = useCustomerSetting({
+  const { fields, openCustomColumnsSetting, renderCustomColumnsSetting } = useCustomerSetting({
     storageKey: 'customer-table-columns',
     systemFields: staticSystemFields,
     initialUserFields: staticUserFields,
