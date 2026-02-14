@@ -92,8 +92,10 @@ export const useCustomerSetting = (props: UseCustomerSettingProps): UseCustomerS
   const { storageKey, maxSelectedCount = 16 } = props;
   const [systemFields, setSystemFields] = useState<SystemField[]>([]);
   const [fields, setFields] = useState<CustomField[]>([]);
+  // 后续可能需要使用的状态，暂时注释
+  // const [diffedFields, setDiffedFields] = useState<FieldInUse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // 内部管理设置面板可见性
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -123,6 +125,8 @@ export const useCustomerSetting = (props: UseCustomerSettingProps): UseCustomerS
       console.log('wgrdiffFields result:', calculatedDiffedFields);
       const customFields = transformFields(calculatedDiffedFields);
       setFields(customFields);
+      // 后续可能需要使用的状态更新，暂时注释
+      // setDiffedFields(calculatedDiffedFields);
     } catch (error) {
       console.error('Failed to diff fields:', error);
     } finally {
@@ -182,7 +186,7 @@ export const useCustomerSetting = (props: UseCustomerSettingProps): UseCustomerS
     setVisible(true);
   }, []);
 
-  // 更新字段的方法
+  // 更新字段的方法 wgr真实没有
   const updateFields = useCallback((newFields: CustomField[]) => {
     setFields(newFields);
   }, []);

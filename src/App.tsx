@@ -832,7 +832,6 @@ function App() {
   fields: CustomField[];
   loading: boolean;
   save: () => void;
-  updateFields: (newFields: CustomField[]) => void;
   openCustomColumnsSetting: () => void;
   renderCustomColumnsSetting: () => JSX.Element;
 }`}
@@ -865,11 +864,6 @@ function App() {
                     <td style={{ padding: '8px 12px', border: '1px solid #e8e8e8' }}>save</td>
                     <td style={{ padding: '8px 12px', border: '1px solid #e8e8e8' }}>() =&gt; void</td>
                     <td style={{ padding: '8px 12px', border: '1px solid #e8e8e8' }}>保存用户字段配置</td>
-                  </tr>
-                  <tr>
-                    <td style={{ padding: '8px 12px', border: '1px solid #e8e8e8' }}>updateFields</td>
-                    <td style={{ padding: '8px 12px', border: '1px solid #e8e8e8' }}>(fields) =&gt; void</td>
-                    <td style={{ padding: '8px 12px', border: '1px solid #e8e8e8' }}>手动更新字段</td>
                   </tr>
                   <tr>
                     <td style={{ padding: '8px 12px', border: '1px solid #e8e8e8' }}>openCustomColumnsSetting</td>
@@ -953,14 +947,14 @@ function App() {
           padding: 24px;
           border-radius: 4;
           min-height: 80vh;
-          padding-right: 280px;
+          padding-right: 214px;
         }
         
         .app-toc {
           position: fixed;
           top: 100px;
           right: 24px;
-          width: 240px;
+          width: 173px;
           max-height: calc(100vh - 120px);
           overflow-y: auto;
           background: #fff;
@@ -1091,7 +1085,7 @@ function App() {
             <MenuOutlined style={{ fontSize: 20, color: '#4a7c59' }} />
           </div>
           <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#4a7c59' }}>
-            CustomerSetting 组件文档
+            CustomerSetting 自定义组件
           </div>
         </div>
         <div className={`app-sidebar ${mobileMenuVisible ? 'mobile-visible' : ''}`}>
