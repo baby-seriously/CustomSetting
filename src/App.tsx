@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Menu, Card, Button, Table, Tabs, Tag, Tour, Divider, Drawer, Anchor } from 'antd';
 import { SettingOutlined, CodeOutlined, HomeOutlined, ApiOutlined, MenuOutlined } from '@ant-design/icons';
 import { useCustomerSetting } from './ocean-components/CustomerSetting/hooks/useCustomSetting';
@@ -16,8 +16,6 @@ const { TabPane } = Tabs;
 function App() {
   const [activeMenu, setActiveMenu] = useState('home');
   const [tourVisible, setTourVisible] = useState(false);
-  const [tourStepIndex, setTourStepIndex] = useState(0);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(true);
 
@@ -50,9 +48,9 @@ function App() {
     {
       title: '自定义设置',
       description: '点击此按钮打开自定义字段设置面板',
-      target: () => document.querySelector('.ant-btn-primary'),
+      target: () => document.querySelector('.ant-btn-primary') as HTMLElement | null,
     },
-  ];
+  ] as any;
 
   // 右侧目录导航配置
   const tocItems = useMemo(() => {
@@ -96,21 +94,6 @@ function App() {
     systemFields: staticSystemFields,
     initialUserFields: staticUserFields,
     maxSelectedCount: 16,
-  });
-
-  // 示例2：使用getSystemFields函数
-  const getSystemFields = useCallback(async () => {
-    // 模拟API调用延迟
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return staticSystemFields;
-  }, []);
-
-  const {
-    fields: fieldsExample2,
-  } = useCustomerSetting({
-    storageKey: 'customer-table-example-2',
-    getSystemFields,
-    initialUserFields: staticUserFields,
   });
 
   // 示例1的表格列定义
@@ -176,21 +159,6 @@ function App() {
     console.log('wgr columnsExample1 - 最终columns:', result);
     return result;
   }, [fieldsExample1]);
-
-  // 示例2的表格列定义
-  const columnsExample2 = useMemo(() => {
-    console.log('wgr columnsExample2 - fieldsExample2:', fieldsExample2.map(f => ({ field: f.field, label: f.label, checked: f.checked, order: f.order })));
-    const result = fieldsExample2
-      .filter(field => field.checked || field.fixed || field.disabled)
-      .sort((a, b) => a.order - b.order)
-      .map(field => ({
-        title: field.label,
-        dataIndex: field.field,
-        key: field.field,
-      }));
-    console.log('wgr columnsExample2 - 最终columns:', result);
-    return result;
-  }, [fieldsExample2]);
 
   // 模拟表格数据
   const data = [
@@ -330,8 +298,8 @@ function App() {
     </div>
 
   );
+
   // 示例3：组件demo展示（类似vis-tree-react的方式）
-  const [activeTabExample3, setActiveTabExample3] = useState('demo');
   const {
     fields: fieldsExample3,
     openCustomColumnsSetting: openSettingExample3,
@@ -407,7 +375,6 @@ function App() {
   }, [fieldsExample3]);
 
   // 示例4：一级分组字段（不进行分组归类）
-  const [activeTabExample4, setActiveTabExample4] = useState('demo');
   const {
     fields: fieldsExample4,
     openCustomColumnsSetting: openSettingExample4,
@@ -1161,7 +1128,6 @@ function App() {
         </Drawer>
         <Tour
           open={tourVisible}
-          current={tourStepIndex}
           onClose={() => setTourVisible(false)}
           steps={tourSteps}
         />

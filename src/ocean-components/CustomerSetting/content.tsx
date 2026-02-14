@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useCustomFieldsManagement } from './hooks/useCustomFieldsManagement';
 import { type CustomField } from './hooks/useCustomSetting';
 import ColGroups from './components/ColGroup';
@@ -11,7 +11,7 @@ interface InnerProps {
   maxSelectedCount?: number;
 }
 
-export const CustomsettingSettingInner = forwardRef<{}, InnerProps>(({ fields, onChange, maxSelectedCount = 16 }, ref) => {
+export const CustomsettingSettingInner = ({ fields, onChange, maxSelectedCount = 16 }: InnerProps) => {
   console.log('wgr CustomsettingSettingInner - fields:', fields.map(f => ({ field: f.field, checked: f.checked })));
 
   const isResettingRef = useRef(false);
@@ -80,4 +80,4 @@ export const CustomsettingSettingInner = forwardRef<{}, InnerProps>(({ fields, o
       />
     </div>
   );
-});
+}
