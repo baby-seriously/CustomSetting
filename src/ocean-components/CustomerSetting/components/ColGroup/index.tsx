@@ -31,7 +31,6 @@ export interface ColGroupsProps {
 
 // 根据 fields 数据构建分组树形结构
 const buildGroupsFromFields = (fields: CustomField[]) => {
-  console.log('wgr buildGroupsFromFields input fields:', fields);
 
   //用于和存储分组信息，放置重复创建
   const groupsMap = new Map<string, any>(); // Key: path string, e.g., "GroupA/GroupB"
@@ -99,7 +98,6 @@ const buildGroupsFromFields = (fields: CustomField[]) => {
   }
 
   const result = Array.from(rootNodes.values());
-  console.log('wgr buildGroupsFromFields result:', result);
   return result;
 };
 
@@ -174,15 +172,9 @@ export default function ColGroups({ fields, onToggleFields, maxLevel = 3 }: ColG
   );
 
   const handleChangeCheckbox = (fieldKeys: string[], checked: boolean) => {
-    console.log('wgr ColGroup handleChangeCheckbox called with:', { fieldKeys, checked });
-    console.log(
-      'wgr ColGroup handleChangeCheckbox current fields state:',
-      fields.map(f => ({ field: f.field, checked: f.checked })),
-    );
 
     // 使用来自Hook的切换函数
     onToggleFields(fieldKeys, checked);
-    console.log('wgr ColGroup handleChangeCheckbox completed');
   };
 
   const renderTree = useMemo(() => {
@@ -191,7 +183,6 @@ export default function ColGroups({ fields, onToggleFields, maxLevel = 3 }: ColG
       fieldsRender: React.ReactNode[];
     } => {
       // 添加日志查看输入数据
-      console.log(`wgr ColGroup genRender called with level ${level}:`, groups);
 
       const groupsRenderArr = [];
       const fiedlsRenderArr = [];
@@ -222,18 +213,22 @@ export default function ColGroups({ fields, onToggleFields, maxLevel = 3 }: ColG
         //计算分组内字段的选择情况，渲染二级标题，给fiedlsRenderArr消费
         let checkBoxGroupRender;
         if (Array.isArray(item.fields) && item.fields.length > 0) {
-          const allFieldsKey = item.fields
-            .filter((f: CustomField) => f && !f.disabled)
-            .map((f: CustomField) => f.field);
-          const checkedFields = allFieldsKey.filter((key: string) => fields.find(f => f && f.field === key)?.checked);
-          const isAllCheck = checkedFields.length === allFieldsKey.length && allFieldsKey.length > 0;
-          const isSomeCheck = checkedFields.length > 0;
-          const indeterminate = !isAllCheck && isSomeCheck;
+          // 获取所有字段（包括禁用的）用于计算选中状态
+          const allFields = item.fields;
+          // 获取可切换的字段（非禁用的）用于点击事件
+          const toggleableFields = allFields.filter((f: CustomField) => f && !f.disabled);
+          const toggleableFieldKeys = toggleableFields.map((f: CustomField) => f.field);
+
+          // 计算所有字段的选中状态
+          const allChecked = allFields.every((f: CustomField) => f && f.checked);
+          const someChecked = allFields.some((f: CustomField) => f && f.checked);
+          const indeterminate = someChecked && !allChecked;
+
           checkBoxGroupRender = (
             <Checkbox
-              onChange={() => handleChangeCheckbox(allFieldsKey, !isAllCheck)}
+              onChange={() => handleChangeCheckbox(toggleableFieldKeys, !allChecked)}
               indeterminate={indeterminate}
-              checked={isAllCheck}
+              checked={allChecked}
             >
               {item.description ? (
                 <TitleWithHelp title={item.groupName} help={item.description} placement="top" />
@@ -255,7 +250,6 @@ export default function ColGroups({ fields, onToggleFields, maxLevel = 3 }: ColG
               data-id={item.id || ''}
               key={item.id || `group-${level}-${groupsRenderArr.length}`}
               onClick={event => {
-                console.log('wgr ColGroup onLevelClick called with:', { itemId: item.id, event });
                 // 立即设置活动分组，提供即时反馈
                 setActiveGroupId(item.id?.toString() || '');
                 // 设置点击滚动标志
@@ -327,8 +321,6 @@ export default function ColGroups({ fields, onToggleFields, maxLevel = 3 }: ColG
   );
 
   // 添加日志查看左侧分组树渲染的数据结构
-  console.log('wgr ColGroup renderTree.groups data structure:', renderTree.groups);
-  console.log('wgr ColGroup filterGroups data structure:', filterGroups);
 
   return (
     <div className={style.colGroups}>

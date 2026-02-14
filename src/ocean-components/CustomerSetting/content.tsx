@@ -1,25 +1,32 @@
-import { useImperativeHandle, forwardRef, useEffect } from 'react';
-import { Spin } from 'antd';
-import { useCustomerSetting, type CustomField } from './hooks/useCustomSetting';
+import { forwardRef, useEffect, useRef, useCallback } from 'react';
 import { useCustomFieldsManagement } from './hooks/useCustomFieldsManagement';
+import { type CustomField } from './hooks/useCustomSetting';
 import ColGroups from './components/ColGroup';
 import ColSorter from './components/ColSorter';
 import style from './style.module.less';
 
-type InnerProps = Parameters<typeof useCustomerSetting>[0];
-
-export interface CustomsettingInnerRef {
-  onSave: () => Promise<void>;
-  getValue: () => CustomField[];
+interface InnerProps {
+  fields: CustomField[];
+  onChange: (fields: CustomField[]) => void;
+  maxSelectedCount?: number;
 }
 
-export const CustomsettingSettingInner = forwardRef<CustomsettingInnerRef, InnerProps>((props, ref) => {
-  // 从 useCustomerSetting hook 获取字段
-  const { fields: customFields, loading, save } = useCustomerSetting(props);
+export const CustomsettingSettingInner = forwardRef<{}, InnerProps>(({ fields, onChange, maxSelectedCount = 16 }, ref) => {
+  console.log('wgr CustomsettingSettingInner - fields:', fields.map(f => ({ field: f.field, checked: f.checked })));
+
+  const isResettingRef = useRef(false);
+  const initialFieldsRef = useRef<CustomField[]>([]);
+
+  // 保存初始状态
+  useEffect(() => {
+    if (initialFieldsRef.current.length === 0) {
+      initialFieldsRef.current = fields.map(f => ({ ...f }));
+    }
+  }, [fields]);
 
   // 使用自定义 Hook 管理字段状态和操作
   const {
-    fields,
+    fields: managedFields,
     selectedFields,
     dragValues,
     fixedValues,
@@ -29,39 +36,39 @@ export const CustomsettingSettingInner = forwardRef<CustomsettingInnerRef, Inner
     handleReorderFields,
     handleResetFields,
   } = useCustomFieldsManagement({
-    initialFields: customFields,
-    maxSelectedCount: 16, // 最多选择16个字段
+    initialFields: fields,
+    maxSelectedCount,
   });
 
-  // 当系统字段变化时更新内部状态，但只在初始化时更新
+  // 重置字段处理函数
+  const handleReset = useCallback(() => {
+    isResettingRef.current = true;
+    handleResetFields();
+    setTimeout(() => {
+      isResettingRef.current = false;
+      onChange(initialFieldsRef.current);
+    }, 0);
+  }, [handleResetFields, onChange]);
+
+  // 当外部字段变化时更新内部状态
   useEffect(() => {
-    if (fields.length === 0 && customFields.length > 0) {
-      handleFieldsChange(customFields);
+    if (!isResettingRef.current) {
+      handleFieldsChange(fields);
     }
-  }, [customFields, handleFieldsChange, fields.length]);
+  }, [fields, handleFieldsChange]);
 
-  // 暴露方法给父组件
-  useImperativeHandle(
-    ref,
-    () => ({
-      onSave: async () => {
-        // 保存当前字段状态
-        return save();
-      },
-      getValue: () => fields,
-    }),
-    [save, fields],
-  );
-
-  if (loading) {
-    return <Spin size="large" />;
-  }
+  // 当内部字段变化时通知外部
+  useEffect(() => {
+    if (!isResettingRef.current) {
+      onChange(managedFields);
+    }
+  }, [managedFields, onChange]);
 
   return (
     <div className={style.content}>
-      <ColGroups fields={fields} onToggleFields={handleToggleFields} />
+      <ColGroups fields={managedFields} onToggleFields={handleToggleFields} />
       <ColSorter
-        fields={fields}
+        fields={managedFields}
         selectedFields={selectedFields}
         dragValues={dragValues}
         fixedValues={fixedValues}
@@ -69,7 +76,7 @@ export const CustomsettingSettingInner = forwardRef<CustomsettingInnerRef, Inner
         onFieldsChange={handleFieldsChange}
         onRemoveFields={handleRemoveFields}
         onReorderFields={handleReorderFields}
-        onReset={handleResetFields}
+        onReset={handleReset}
       />
     </div>
   );

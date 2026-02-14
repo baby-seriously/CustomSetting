@@ -70,7 +70,7 @@ const insertField = (currentFields: FieldInUse[], newField: FieldInUse, systemFi
 
 /** 主函数：diffFields */
 export const diffFields = (systemFields: SystemField[], userFields: UserField[]): FieldInUse[] => {
- const systemFieldKeys = new Set(systemFields.map(f => f.key));
+  const systemFieldKeys = new Set(systemFields.map(f => f.key));
 
  // 过滤掉 user 中已经下架的字段
  const filteredUserFields: FieldInUse[] = userFields

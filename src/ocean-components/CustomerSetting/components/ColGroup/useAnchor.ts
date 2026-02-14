@@ -13,7 +13,6 @@ export const onLevelClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>
  const { parentNode } = target as HTMLDivElement;
 
  // 添加日志
- console.log('wgr useAnchor onLevelClick called with:', { id: id.toString(), event });
 
  // level-1 active
  const activeLevel1Dom = document.querySelector(`.${style.leftGroups} .active-l1`);
@@ -43,17 +42,6 @@ export const onLevelClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>
  const selector = `.group-${escapedId}`;
  const targetElement = rightDom.querySelector(selector);
 
- console.log('wgr useAnchor attempting to scroll to:', {
- id: id.toString(),
- escapedId,
- selector,
- elementFound: !!targetElement,
- elementPosition: targetElement ? targetElement.getBoundingClientRect() : null,
- allGroupElements: Array.from(rightDom.querySelectorAll('[class*="group-"]')).map(el => ({
- className: el.className,
- id: el.getAttribute('data-id'),
- })),
- });
 
  if (targetElement) {
  targetElement.scrollIntoView({

@@ -4,20 +4,23 @@ import { diffFields } from './diff';
 import type { FieldInUse } from './diff';
 import type { SystemField, UserField } from '../types/CustomPreferred';
 // import { getUserFields } from '../api/getUserFields';
-import { saveUserFields } from '../api/saveUserFields';
+// import { saveUserFields } from '../api/saveUserFields';
 import { CustomsettingSetting } from '../Customsetting';
 export type UseCustomerSettingProps = MergeExclusive<
   //  { storageKey: string; systemFields: SystemField[] },
   //  { storageKey: string; getSystemFields: () => Promise<SystemField[]> }
-  { storageKey: string; systemFields: SystemField[]; initialUserFields: UserField[] },
-  { storageKey: string; getSystemFields: () => Promise<SystemField[]>; initialUserFields: UserField[] }
+  { storageKey: string; systemFields: SystemField[]; initialUserFields: UserField[]; maxSelectedCount?: number },
+  { storageKey: string; getSystemFields: () => Promise<SystemField[]>; initialUserFields: UserField[]; maxSelectedCount?: number }
+
 >;
 export interface UseCustomerSettingReturn {
   fields: CustomField[]; // 用于UI渲染的字段
   loading: boolean;
-  save: () => Promise<void>; // 保存用户设置的方法
+  // save: () => Promise<void>;
+  save: () => void; // 保存用户设置的方法
+  updateFields: (newFields: CustomField[]) => void; // 更新字段状态的方法
   openCustomColumnsSetting: () => void; // 显示设置面板的方法
-  renderCustomColumnsSetting: JSX.Element; // 渲染设置组件的实例
+  renderCustomColumnsSetting: () => JSX.Element; // 渲染设置组件的函数
 }
 
 export interface CustomField extends SystemField {
@@ -86,13 +89,13 @@ const transformFields = (fields: FieldInUse[]): CustomField[] => {
 
 export const useCustomerSetting = (props: UseCustomerSettingProps): UseCustomerSettingReturn => {
   console.log('wgr useCustomerSetting 初始化，props:', props);
-  const { storageKey } = props;
+  const { storageKey, maxSelectedCount = 16 } = props;
   const [systemFields, setSystemFields] = useState<SystemField[]>([]);
   const [fields, setFields] = useState<CustomField[]>([]);
   // 后续可能需要使用的状态，暂时注释
   // const [diffedFields, setDiffedFields] = useState<FieldInUse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [isSettingVisible, setIsSettingVisible] = useState(false); // 内部管理设置面板可见性
+  const [visible, setVisible] = useState(false); // 内部管理设置面板可见性
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -104,8 +107,19 @@ export const useCustomerSetting = (props: UseCustomerSettingProps): UseCustomerS
 
       setSystemFields(systemFields);
 
-      // 直接使用传入的 initialUserFields
-      const userFields = props.initialUserFields;
+      // 优先从localStorage中获取用户设置
+      let userFields = props.initialUserFields;
+      try {
+        const storedData = localStorage.getItem(`wgr/customer/${storageKey}`);
+        if (storedData) {
+          userFields = JSON.parse(storedData);
+          console.log('wgr 从localStorage获取用户设置:', userFields);
+        }
+      } catch (error) {
+        console.error('Failed to get user fields from localStorage:', error);
+        // 如果从localStorage获取失败，使用初始用户字段
+        userFields = props.initialUserFields;
+      }
 
       const calculatedDiffedFields = diffFields(systemFields, userFields);
       console.log('wgrdiffFields result:', calculatedDiffedFields);
@@ -130,52 +144,79 @@ export const useCustomerSetting = (props: UseCustomerSettingProps): UseCustomerS
 
 
   //有checked为true的字段时，才会调用saveUserFields保存用户设置
-  const save = useCallback(async () => {
-    setLoading(true);
+  // const save = useCallback(async () => {
+  //   setLoading(true);
+  //   try {
+  //     if (fields.some(field => field.checked)) {
+  //       const userFields: UserField[] = fields
+  //         .filter(field => field.checked)
+  //         .map(field => ({
+  //           key: field.key,
+  //           selected: true,
+  //         }));
+  //       await saveUserFields(storageKey, userFields);
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to save fields:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, [storageKey, fields]);
+
+  // 直接保存到localStorage的逻辑
+  const save = useCallback(() => {
     try {
-      if (fields.some(field => field.checked)) {
-        const userFields: UserField[] = fields
-          .filter(field => field.checked)
-          .map(field => ({
-            key: field.key,
-            selected: true,
-          }));
-        await saveUserFields(storageKey, userFields);
-      }
+      // 保存所有字段的选择状态，而不仅仅是选中的字段
+      const userFields: UserField[] = fields
+        .map(field => ({
+          key: field.key,
+          selected: field.checked,
+        }));
+      // 直接保存到localStorage
+      localStorage.setItem(`wgr/customer/${storageKey}`, JSON.stringify(userFields));
+      console.log('wgr 直接保存到localStorage成功:', userFields);
     } catch (error) {
-      console.error('Failed to save fields:', error);
-    } finally {
-      setLoading(false);
+      console.error('Failed to save fields to localStorage:', error);
     }
   }, [storageKey, fields]);
 
 
   //字段恢复到系统默认状态。
-  // 1. 左侧复选框状态重置为 defaultSelect 或 false
-  // 2. 右侧列表排序重置为系统默认顺序
-  // const resetFields = useCallback(() => {
-  //   const defaultFields = systemFields.map(field => ({
-  //     ...field,
-  //     checked: field.defaultSelect ?? false,
-  //   }));
-  //   const customFields = transformFields(defaultFields as FieldInUse[]);
-  //   setFields(customFields);
-  // }, [systemFields]);
+  //1. 左侧复选框状态重置为 defaultSelect 或 false
+  //  2. 右侧列表排序重置为系统默认顺序
+  const resetFields = useCallback(() => {
+    const defaultFields = systemFields.map(field => ({
+      ...field,
+      checked: field.defaultSelect ?? false,
+    }));
+    const customFields = transformFields(defaultFields as FieldInUse[]);
+    setFields(customFields);
+  }, [systemFields]);
 
   // 显示设置面板
   const openCustomColumnsSetting = useCallback(() => {
-    setIsSettingVisible(true);
+    setVisible(true);
   }, []);
 
-  // 渲染设置组件的实例
-  const renderCustomColumnsSetting = (
+  // 渲染设置组件的函数
+  const renderCustomColumnsSetting = () => (
     <CustomsettingSetting
-      {...props}
-      visible={isSettingVisible}
-      onCancel={() => setIsSettingVisible(false)}
-      onSaveSuccess={() => setIsSettingVisible(false)}
+      visible={visible}
+      fields={fields}
+      onChange={setFields}
+      onCancel={() => setVisible(false)}
+      onSave={async () => {
+        await save();
+        setVisible(false);
+      }}
+      maxSelectedCount={maxSelectedCount}
     />
   );
 
-  return { fields, loading, save, openCustomColumnsSetting, renderCustomColumnsSetting };
+  return {
+    fields,
+    openCustomColumnsSetting,
+    renderCustomColumnsSetting,
+  };
+  //wgrtodo 还有loading状态返回
 };

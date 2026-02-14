@@ -23,10 +23,7 @@ export const staticUserFields: UserField[] = [
     selected: true,
   },
   // 缺少 cpm, cpc，测试新增
-  {
-    key: 'deep_conversion_cost',
-    selected: false,
-  },
+  {    key: 'deep_conversion_cost',    selected: true,  },
   {
     key: 'conversion_cost',
     selected: true,

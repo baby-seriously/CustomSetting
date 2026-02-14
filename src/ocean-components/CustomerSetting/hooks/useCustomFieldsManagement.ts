@@ -128,13 +128,12 @@ export function useCustomFieldsManagement({
 
  // 重置字段
  const handleResetFields = useCallback(() => {
- console.log('wgr handleResetFields called');
- console.log('wgr handleResetFields current fields state:', fields.map(f => ({ field: f.field, checked: f.checked })));
- console.log('wgr handleResetFields resetting to initialFields:', initialFields.map(f => ({ field: f.field, checked: f.checked })));
 
- setFields(initialFields);
+ // 深拷贝 initialFields 以确保状态更新
+ const resetFields = initialFields.map(field => ({ ...field }));
+ setFields(resetFields);
  console.log('wgr handleResetFields completed');
- }, [initialFields, fields]);
+ }, [initialFields]);
 
  return {
  fields,

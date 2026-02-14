@@ -1,37 +1,22 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Modal, Alert, type ModalProps } from 'antd';
-import { CustomsettingSettingInner, type CustomsettingInnerRef } from './content';
-import { useCustomerSetting } from './hooks/useCustomSetting';
+import { CustomsettingSettingInner } from './content';
+import { type CustomField } from './hooks/useCustomSetting';
 import style from './style.module.less';
-// 从 hook 中获取 Props 类型
-export type CustomsettingSettingProps = Parameters<typeof useCustomerSetting>[0] & {
+
+export type CustomsettingSettingProps = {
   visible: boolean;
+  fields: CustomField[];
+  onChange: (fields: CustomField[]) => void;
   onCancel?: () => void;
-  onSaveSuccess?: () => void; // 保存成功后的回调
+  onSave: () => Promise<void>;
   modalProps?: ModalProps; // 使用antd Modal的props类型
   showTips?: boolean;
+  maxSelectedCount?: number;
 };
 
-// 这是完整的Props类型，必须包含
-// - storageKey: string
-// - systemFields: SystemField[] 或 getSystemFields: () => Promise<SystemField[]>
 export function CustomsettingSetting(props: CustomsettingSettingProps): React.ReactElement {
-  const { visible, onCancel, onSaveSuccess, modalProps, showTips, ...hookProps } = props;
-
-  // 创建 ref 来调用内部组件的 保存 方法
-  const innerRef = useRef<CustomsettingInnerRef>(null);
-
-  const handleOk = async () => {
-    const success = await innerRef.current?.onSave();
-    if (success) {
-      if (onSaveSuccess) {
-        onSaveSuccess();
-      }
-      if (onCancel) {
-        onCancel();
-      }
-    }
-  };
+  const { visible, fields, onChange, onCancel, onSave, modalProps, showTips, maxSelectedCount } = props;
 
   return (
     <Modal
@@ -40,8 +25,9 @@ export function CustomsettingSetting(props: CustomsettingSettingProps): React.Re
       width={900}
       title="自定义列"
       okText="保存"
+      cancelText="取消"
       {...modalProps}
-      onOk={handleOk}
+      onOk={onSave}
       onCancel={onCancel}
     >
       {showTips && (
@@ -52,8 +38,12 @@ export function CustomsettingSetting(props: CustomsettingSettingProps): React.Re
           title="若调整字段顺序，同组其他字段顺序将同步被调整"
         />
       )}
-      {/* 将 hook 需要的 props 和 ref 传递给内部组件 */}
-      <CustomsettingSettingInner {...hookProps} ref={innerRef} />
+      {/* 将字段和回调传递给内部组件 */}
+      <CustomsettingSettingInner
+        fields={fields}
+        onChange={onChange}
+        maxSelectedCount={maxSelectedCount}
+      />
     </Modal>
   );
 }
