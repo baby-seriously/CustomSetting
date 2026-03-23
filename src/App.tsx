@@ -521,16 +521,6 @@ function App() {
         <pre style={{ backgroundColor: '#f8fbf9', border: '1px solid #e6f0ea', padding: 12, borderRadius: 4, overflow: 'auto' }}>
           {`<Button onClick={openCustomColumnsSetting}>自定义字段图标</Button>\n{renderCustomColumnsSetting()}`}
         </pre>
-        <h4 id="use-fields" style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: 12 }}>fields 如何用于主列表渲染</h4>
-        <p>fields 是 Hook 提供的中间态，业务方可根据自身需求自由转换。</p>
-        <pre style={{ backgroundColor: '#f8fbf9', border: '1px solid #e6f0ea', padding: 12, borderRadius: 4, overflow: 'auto' }}>
-          {`const columns = fields\n  .filter(field => field.checked || field.fixed)\n  .sort((a, b) => a.order - b.order)\n  .map(field => ({\n    title: field.label,\n    dataIndex: field.field,\n    key: field.field,\n  }));`}
-        </pre>
-        <h4 id="use-panel" style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: 12 }}>字段设置面板的使用方式</h4>
-        <p>设置面板的显示状态由 Hook 内部管理,使用者仅需负责触发与挂载</p>
-        <pre style={{ backgroundColor: '#f8fbf9', border: '1px solid #e6f0ea', padding: 12, borderRadius: 4, overflow: 'auto' }}>
-          {`<Button onClick={openCustomColumnsSetting}>自定义字段图标</Button>\n{renderCustomColumnsSetting()}`}
-        </pre>
         <h4 id="use-example" style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: 12 }}>最小完整实例</h4>
         <pre style={{ backgroundColor: '#f8fbf9', border: '1px solid #e6f0ea', padding: 12, borderRadius: 4, overflow: 'auto' }}>
           {`import { useCustomerSetting } from 'xxx';\nconst { fields, openCustomColumnsSetting, renderCustomColumnsSetting } = useCustomerSetting({\n  storageKey: 'customer-table-demo',\n  systemFields: staticSystemFields,\n});\nconst columns = fields\n  .filter(field => field.checked)\n  .map(field => ({\n    title: field.label,\n    dataIndex: field.field,\n    key: field.field,\n  }));\n\nreturn (\n  <div>\n    <Button onClick={openCustomColumnsSetting}>\n      自定义列设置\n    </Button>\n    <Table\n      columns={columns}\n      dataSource={data}\n    />\n    {renderCustomColumnsSetting}\n  </div>\n);`}
