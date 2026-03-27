@@ -106,9 +106,7 @@ export default function ColGroups({ fields, onToggleFields, maxLevel = 3 }: ColG
   const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
   const rightFieldsRef = useRef<HTMLDivElement>(null);
   const groupElementsRef = useRef<Map<string, HTMLElement>>(new Map());
-
   const groupedFields = useMemo(() => buildGroupsFromFields(fields), [fields]);
-
   // 添加一个标志，用于判断是否是点击触发的滚动
   const isClickScrollingRef = useRef(false);
 

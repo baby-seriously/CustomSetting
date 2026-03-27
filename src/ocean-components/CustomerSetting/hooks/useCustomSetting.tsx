@@ -92,6 +92,7 @@ export const useCustomerSetting = (props: UseCustomerSettingProps): UseCustomerS
   const { storageKey, maxSelectedCount = 16 } = props;
   const [systemFields, setSystemFields] = useState<SystemField[]>([]);
   const [fields, setFields] = useState<CustomField[]>([]);
+  const [tempFields, setTempFields] = useState<CustomField[]>([]); // 临时状态
   // 后续可能需要使用的状态，暂时注释
   // const [diffedFields, setDiffedFields] = useState<FieldInUse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -141,6 +142,11 @@ export const useCustomerSetting = (props: UseCustomerSettingProps): UseCustomerS
     console.log('wgr useCustomerSetting 调用 fetchData');
     fetchData();
   }, [fetchData]);
+
+  // 当 fields 变化时，更新 tempFields
+  useEffect(() => {
+    setTempFields(fields);
+  }, [fields]);
 
 
   //有checked为true的字段时，才会调用saveUserFields保存用户设置
@@ -195,10 +201,14 @@ export const useCustomerSetting = (props: UseCustomerSettingProps): UseCustomerS
   const renderCustomColumnsSetting = () => (
     <CustomsettingSetting
       visible={visible}
-      fields={fields}
-      onChange={setFields}
-      onCancel={() => setVisible(false)}
+      fields={tempFields} // 使用临时状态
+      onChange={setTempFields} // 更新临时状态
+      onCancel={() => {
+        setTempFields(fields); // 重置临时状态
+        setVisible(false);
+      }}
       onSave={async () => {
+        setFields(tempFields); // 保存临时状态到正式状态
         await save();
         setVisible(false);
       }}
