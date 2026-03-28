@@ -672,7 +672,7 @@ function App() {
                     </tr>
                     <tr>
                       <td style={{ padding: '8px 12px', border: '1px solid #e8e8e8' }}>
-                        groups <Tag color="red">必填</Tag>
+                        groups <Tag color="green">可选</Tag>
                       </td>
                       <td style={{ padding: '8px 12px', border: '1px solid #e8e8e8' }}>{`{ title: string; dragScope?: true }[]`}</td>
                       <td style={{ padding: '8px 12px', border: '1px solid #e8e8e8' }}>所属分组，用于拖拽范围控制</td>
